@@ -1,0 +1,7 @@
+server:
+  port: 3000
+# 应用名称
+spring:
+  application:
+    name: worm_cat
+
