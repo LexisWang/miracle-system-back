@@ -6,6 +6,13 @@ package com.miracle.worm_cat.common.constant;
  */
 public interface BaseConstant {
 
+    /** 解析后的用户参数 */
+    String USER_ID = "USER_ID";
+    String USER_NICKNAME = "USER_NICKNAME'";
+    String USER_SCOPE_OBJ = "USER_SCOPE_OBJ";
+    String USER_ROLE_TYPE_OBJ = "USER_ROLE_TYPE_OBJ";
+    String SUPER_ID_OBJ = "SUPER_ID_OBJ";
+
     /** 加密 Token 的密钥 */
     String TOKEN_SIGNATURE_SECRET = "-lx7b@9nzhat9rtdp986f(kbdg35m0fkj$zif_)y5!v7lm=y@o";
 

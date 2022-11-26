@@ -14,6 +14,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <commons-lang3.version>3.1</commons-lang3.version>
+        <mysql-connector.version>8.0.20</mysql-connector.version>
+        <druid.version>1.1.23</druid.version>
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
+        <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
+        <freemarker.version>2.3.28</freemarker.version>
+        <mybatis-plus-join.version>1.1.8</mybatis-plus-join.version>
     </properties>
 
     <dependencies>
@@ -62,6 +68,51 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
+        </dependency>
+        <!--Mysql数据库驱动-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector.version}</version>
+        </dependency>
+        <!--集成druid连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <!-- mybatis plus 代码生成器 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus-generator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
+        <!-- mybatis-pus 多表联查工具 -->
+        <dependency>
+            <groupId>com.github.yulichang</groupId>
+            <artifactId>mybatis-plus-join</artifactId>
+            <version>${mybatis-plus-join.version}</version>
+        </dependency>
+        <!-- 日期时间处理工具 -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.12.1</version>
+        </dependency>
+        <!-- redis 缓存依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 

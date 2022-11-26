@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.worm_cat.mapper.system.BimValueMapper">
+
+    <resultMap id="BaseResultMap" type="com.miracle.worm_cat.domain.system.BimValue">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="valueCode" column="value_code" jdbcType="VARCHAR"/>
+            <result property="valueName" column="value_name" jdbcType="VARCHAR"/>
+            <result property="valueStatus" column="value_status" jdbcType="TINYINT"/>
+            <result property="includeIds" column="include_ids" jdbcType="VARCHAR"/>
+            <result property="belongName" column="belong_name" jdbcType="VARCHAR"/>
+            <result property="superId" column="super_id" jdbcType="INTEGER"/>
+            <result property="dictId" column="dict_id" jdbcType="INTEGER"/>
+            <result property="dictName" column="dict_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="BIGINT"/>
+            <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+            <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+            <result property="updaterId" column="updater_id" jdbcType="BIGINT"/>
+            <result property="updaterName" column="updater_name" jdbcType="VARCHAR"/>
+            <result property="version" column="version" jdbcType="SMALLINT"/>
+            <result property="deleted" column="deleted" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,value_code,value_name,
+        value_status,include_ids,belong_name,
+        super_id,dict_id,dict_name,
+        create_time,update_time,creator_id,
+        creator_name,updater_id,updater_name,
+        version,deleted
+    </sql>
+</mapper>

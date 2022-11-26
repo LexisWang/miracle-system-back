@@ -5,3 +5,49 @@ spring:
   application:
     name: worm_cat
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/worm_cat_system?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: worm_cat
+    password: worm_cat
+
+    type: com.alibaba.druid.pool.DruidDataSource
+    platform: mysql
+    druid:
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT1FROMDUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filter:
+        stat:
+          log-slow-sql: true
+
+  # Redis 的相关配置
+  redis:
+    host: localhost # 默认
+    port: 6379
+    password: ''
+    database: 6 # 使用 6 号数据库
+
+# mybatis全局配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto # 自增长 （assign_id:雪花算法生成ID，assign_uuid:生成UUID作为id，id_worker）
+      logic-delete-field: deleted # 全局逻辑删除字段名（since 3.3.0，配置后可以忽略不用在实体类中用注解标识）
+      logic-delete-value: 1 # 逻辑已删除值 （默认值为1）
+      logic-not-delete-value: 0 # 逻辑未删除（默认值为0）
+
+# 设置 打印 SQL 语句的配置
+logging:
+  level:
+    root: info  # 根目录打印级别
+    com.miracle.worm_cat: debug  # 该包打印级别
+    org.springframework.data.elasticsearch.client.WIRE: TRACE # es包打印级别
+

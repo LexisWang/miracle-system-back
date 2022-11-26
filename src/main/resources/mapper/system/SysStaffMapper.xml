@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.worm_cat.mapper.system.SysStaffMapper">
+
+    <resultMap id="BaseResultMap" type="com.miracle.worm_cat.domain.system.SysStaff">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="staffStatus" column="staff_status" jdbcType="TINYINT"/>
+            <result property="inviteCode" column="invite_code" jdbcType="VARCHAR"/>
+            <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+            <result property="superId" column="super_id" jdbcType="BIGINT"/>
+            <result property="orgId" column="org_id" jdbcType="INTEGER"/>
+            <result property="orgName" column="org_name" jdbcType="VARCHAR"/>
+            <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+            <result property="scopeKey" column="scope_key" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="BIGINT"/>
+            <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+            <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+            <result property="updaterId" column="updater_id" jdbcType="BIGINT"/>
+            <result property="updaterName" column="updater_name" jdbcType="VARCHAR"/>
+            <result property="version" column="version" jdbcType="SMALLINT"/>
+            <result property="deleted" column="deleted" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,password,
+        nickname,email,remark,
+        staff_status,invite_code,mobile,
+        super_id,org_id,org_name,
+        role_id,role_name,scope_key,
+        create_time,update_time,creator_id,
+        creator_name,updater_id,updater_name,
+        version,deleted
+    </sql>
+</mapper>
