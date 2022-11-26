@@ -1,4 +1,4 @@
-package com.miracle.worm_cat.exception;
+package com.miracle.worm_cat.common.exception;
 
 /**
  * author: Miracle-

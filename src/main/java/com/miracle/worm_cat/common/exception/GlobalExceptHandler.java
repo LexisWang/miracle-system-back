@@ -1,4 +1,4 @@
-package com.miracle.worm_cat.exception;
+package com.miracle.worm_cat.common.exception;
 
 import com.miracle.worm_cat.common.constant.BaseConstant;
 import com.miracle.worm_cat.common.response.RespResult;

@@ -1,12 +1,20 @@
 package com.miracle.worm_cat.controller.system;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.miracle.worm_cat.common.config.easy_excel.ExportCellStyleStrategy;
 import com.miracle.worm_cat.common.constant.BaseConstant;
 import com.miracle.worm_cat.common.constant.CacheKeys;
 import com.miracle.worm_cat.common.domain.CheckResult;
+import com.miracle.worm_cat.common.domain.NormalBinary;
+import com.miracle.worm_cat.common.domain.NormalStatus;
+import com.miracle.worm_cat.common.exception.MiracleException;
 import com.miracle.worm_cat.common.response.RespResult;
+import com.miracle.worm_cat.common.utils.ExportRespUtil;
 import com.miracle.worm_cat.common.utils.RedisUtil;
 import com.miracle.worm_cat.controller.system.dto.OrgParam;
 import com.miracle.worm_cat.domain.system.SysOrg;
@@ -21,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -254,6 +264,20 @@ public class SysOrgController {
         }
         wrapper.orderByDesc(SysOrg::getCreateTime);
         return RespResult.success(orgService.page(orgPage, wrapper));
+    }
+
+    /**
+     * 部门组织导出
+     */
+    @PostMapping(value = "orgExportData")
+    public void orgExportData(@RequestBody OrgParam param,
+                              HttpServletResponse response) throws IOException {
+        RespResult<Page<SysOrg>> result = orgPageData(param);
+        ExportRespUtil.setResponseHeader("部门组织信息.xls", response);
+        ExcelWriterBuilder excelBookWriter = EasyExcel.write(response.getOutputStream(), SysOrg.class)
+                .registerWriteHandler(ExportCellStyleStrategy.getStyleStrategy());
+        ExcelWriterSheetBuilder sheetFirstWriter = excelBookWriter.sheet("部门组织");
+        sheetFirstWriter.doWrite(result.getData().getRecords());
     }
 
     /**

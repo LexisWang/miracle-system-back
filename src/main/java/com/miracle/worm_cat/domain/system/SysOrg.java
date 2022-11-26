@@ -1,6 +1,12 @@
 package com.miracle.worm_cat.domain.system;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
+import com.miracle.worm_cat.common.config.easy_excel.LongDateConvertString;
+import com.miracle.worm_cat.common.config.easy_excel.NormalBinaryToString;
+import com.miracle.worm_cat.common.config.easy_excel.NormalStatusToString;
+import com.miracle.worm_cat.common.domain.NormalStatus;
 import com.miracle.worm_cat.validate.AddGroup;
 import com.miracle.worm_cat.validate.EnumValue;
 import com.miracle.worm_cat.validate.UpdateGroup;
@@ -19,6 +25,7 @@ public class SysOrg implements Serializable {
     /**
      * 主键ID
      */
+    @ExcelIgnore
     @NotNull(message = "主键ID不能为空", groups = {UpdateGroup.class})
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -26,6 +33,7 @@ public class SysOrg implements Serializable {
     /**
      * 代码
      */
+    @ExcelProperty(value = "部门代码", index = 0)
     @NotBlank(message = "部门代码不能为空", groups = {AddGroup.class})
     @Length(min = 4, max = 16, message = "部门代码长度在4-16之间", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "org_code")
@@ -34,6 +42,7 @@ public class SysOrg implements Serializable {
     /**
      * 名称
      */
+    @ExcelProperty(value = "部门名称", index = 1)
     @NotBlank(message = "部门名称不能为空", groups = {AddGroup.class})
     @Length(min = 4, max = 16, message = "部门名称度在4-16之间", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "org_name")
@@ -42,6 +51,7 @@ public class SysOrg implements Serializable {
     /**
      * 描述
      */
+    @ExcelProperty(value = "部门描述", index = 4)
     @Length(max = 64, message = "部门描述长度不能超过64", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "org_desc")
     private String orgDesc;
@@ -49,6 +59,7 @@ public class SysOrg implements Serializable {
     /**
      * 联系地址
      */
+    @ExcelProperty(value = "联系地址", index = 5)
     @Length(max = 64, message = "部门联系地址长度不能超过64", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "address")
     private String address;
@@ -56,6 +67,7 @@ public class SysOrg implements Serializable {
     /**
      * 联系方式
      */
+    @ExcelProperty(value = "联系方式", index = 2)
     @Length(max = 64, message = "部门联系方式长度不能超过64", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "contact")
     private String contact;
@@ -63,6 +75,7 @@ public class SysOrg implements Serializable {
     /**
      * 联系邮箱
      */
+    @ExcelProperty(value = "联系邮箱", index = 3)
     @Length(max = 24, message = "部门联系邮箱长度不能超过24", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "email")
     private String email;
@@ -70,6 +83,7 @@ public class SysOrg implements Serializable {
     /**
      * 状态
      */
+    @ExcelProperty(value = "部门状态", index = 6, converter = NormalStatusToString.class)
     @NotNull(message = "部门状态不能为空", groups = {AddGroup.class})
     @EnumValue(values = {-1, 0, 1}, groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "org_status")
@@ -78,6 +92,7 @@ public class SysOrg implements Serializable {
     /**
      * 是否叶子
      */
+    @ExcelProperty(value = "是否叶子", index = 7, converter = NormalBinaryToString.class)
     @NotNull(message = "是否叶子不能为空", groups = {AddGroup.class})
     @EnumValue(values = {0, 1}, groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "is_leaf")
@@ -86,6 +101,7 @@ public class SysOrg implements Serializable {
     /**
      * 排序号
      */
+    @ExcelProperty(value = "排序号", index = 8)
     @NotNull(message = "排序号不能为空", groups = {AddGroup.class})
     @TableField(value = "sort_no")
     private Integer sortNo;
@@ -93,6 +109,7 @@ public class SysOrg implements Serializable {
     /**
      * 权限码
      */
+    @ExcelProperty(value = "权限码", index = 9)
     @Length(max = 32, message = "权限码长度不能超过32", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "scope_key")
     private String scopeKey;
@@ -100,6 +117,7 @@ public class SysOrg implements Serializable {
     /**
      * 权限等级
      */
+    @ExcelProperty(value = "权限等级", index = 10)
     @NotNull(message = "权限等级不能为空", groups = {AddGroup.class})
     @TableField(value = "tier_level")
     private Integer tierLevel;
@@ -107,6 +125,7 @@ public class SysOrg implements Serializable {
     /**
      * 父级ID
      */
+    @ExcelIgnore
     @NotNull(message = "父级ID不能为空", groups = {AddGroup.class})
     @TableField(value = "p_id")
     private Integer pId;
@@ -114,6 +133,7 @@ public class SysOrg implements Serializable {
     /**
      * 所有父级ID
      */
+    @ExcelIgnore
     @NotBlank(message = "所有父级ID不能为空", groups = {AddGroup.class})
     @TableField(value = "p_ids")
     private String pIds;
@@ -121,6 +141,7 @@ public class SysOrg implements Serializable {
     /**
      * 备注信息
      */
+    @ExcelProperty(value = "备注信息", index = 11)
     @Length(max = 100, message = "备注信息长度不能超过100", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "org_remark")
     private String orgRemark;
@@ -128,42 +149,49 @@ public class SysOrg implements Serializable {
     /**
      * 创建时间
      */
+    @ExcelProperty(value = "创建时间", index = 12, converter = LongDateConvertString.class)
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Long createTime;
 
     /**
      * 更新时间
      */
+    @ExcelProperty(value = "更新时间", index = 13, converter = LongDateConvertString.class)
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Long updateTime;
 
     /**
      * 创建者ID
      */
+    @ExcelIgnore
     @TableField(value = "creator_id")
     private Long creatorId;
 
     /**
      * 创建者名称
      */
+    @ExcelProperty(value = "创建者", index = 14)
     @TableField(value = "creator_name")
     private String creatorName;
 
     /**
      * 修改者ID
      */
+    @ExcelIgnore
     @TableField(value = "updater_id")
     private Long updaterId;
 
     /**
      * 修改者名称
      */
+    @ExcelProperty(value = "修改者", index = 15)
     @TableField(value = "updater_name")
     private String updaterName;
 
     /**
      * 当前版本
      */
+    @ExcelIgnore
     @Version
     @TableField(value = "version")
     private Integer version;
@@ -171,6 +199,7 @@ public class SysOrg implements Serializable {
     /**
      * 是否逻辑删除
      */
+    @ExcelIgnore
     @EnumValue(values = {0, 1}, groups = {UpdateGroup.class})
     @TableField(value = "deleted")
     private Integer deleted;
