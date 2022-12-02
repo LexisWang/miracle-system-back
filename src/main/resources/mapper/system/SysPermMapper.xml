@@ -5,17 +5,19 @@
 <mapper namespace="com.miracle.worm_cat.mapper.system.SysPermMapper">
 
     <resultMap id="BaseResultMap" type="com.miracle.worm_cat.domain.system.SysPerm">
-            <id property="id" column="id" jdbcType="BIGINT"/>
+            <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="permCode" column="perm_code" jdbcType="VARCHAR"/>
             <result property="permName" column="perm_name" jdbcType="VARCHAR"/>
             <result property="permUri" column="perm_uri" jdbcType="VARCHAR"/>
+            <result property="reqMethod" column="req_method" jdbcType="VARCHAR"/>
             <result property="permStatus" column="perm_status" jdbcType="TINYINT"/>
-            <result property="isLeaf" column="is_leaf" jdbcType="BIT"/>
+            <result property="isLeaf" column="is_leaf" jdbcType="INTEGER"/>
             <result property="sortNo" column="sort_no" jdbcType="TINYINT"/>
             <result property="tierLevel" column="tier_level" jdbcType="TINYINT"/>
-            <result property="globalSort" column="global_sort" jdbcType="BIGINT"/>
+            <result property="globalSort" column="global_sort" jdbcType="INTEGER"/>
             <result property="pId" column="p_id" jdbcType="INTEGER"/>
             <result property="pIds" column="p_ids" jdbcType="VARCHAR"/>
+            <result property="permRemark" column="perm_remark" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="BIGINT"/>
             <result property="updateTime" column="update_time" jdbcType="BIGINT"/>
             <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
@@ -30,9 +32,12 @@
         id,perm_code,perm_name,
         perm_uri,perm_status,is_leaf,
         sort_no,tier_level,global_sort,
-        p_id,p_ids,create_time,
-        update_time,creator_id,creator_name,
-        updater_id,updater_name,version,
-        deleted
+        p_id,p_ids,perm_remark,
+        create_time,update_time,creator_id,
+        creator_name,updater_id,updater_name,
+        version,deleted
     </sql>
+    <select id="permOptsData" resultType="com.miracle.worm_cat.dto.system.TreeOptsDTO">
+        SELECT id `value`, perm_name `label` FROM sys_perm WHERE p_id = #{pid};
+    </select>
 </mapper>

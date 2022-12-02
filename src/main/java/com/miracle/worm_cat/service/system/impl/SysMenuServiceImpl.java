@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
 * @author Administrator
 * @description 针对表【sys_menu(菜单表)】的数据库操作Service实现
-* @createDate 2022-11-21 20:46:38
+* @createDate 2022-11-30 16:40:14
 */
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu>

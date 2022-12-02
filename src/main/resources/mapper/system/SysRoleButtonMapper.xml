@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.worm_cat.mapper.system.SysRoleButtonMapper">
+
+    <resultMap id="BaseResultMap" type="com.miracle.worm_cat.domain.system.SysRoleButton">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+            <result property="buttonId" column="button_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_id,button_id
+    </sql>
+
+    <select id="buttonsByRoleId" resultType="java.lang.Integer">
+        SELECT button_id FROM sys_role_button WHERE role_id = #{roleId};
+    </select>
+    <select id="authButtonListByRole" resultType="com.miracle.worm_cat.dto.system.staff.RoleButtonDTO">
+        SELECT sb.code, sb.name
+        FROM sys_role_button srb
+                 INNER JOIN sys_button sb ON sb.id = srb.button_id
+        WHERE role_id = #{roleId};
+    </select>
+</mapper>

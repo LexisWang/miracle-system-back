@@ -1,10 +1,17 @@
 package com.miracle.worm_cat.common.constant;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * author: Miracle-
  * time: 2022/10/25 21:48
  */
 public interface BaseConstant {
+
+    DateTimeFormatter DATE_TIME_FORMATTER_HYPHEN = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter DATE_FORMATTER_HYPHEN = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter DATE_TIME_FORMATTER_SLASH = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    DateTimeFormatter DATE_FORMATTER_SLASH = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     /** 解析后的用户参数 */
     String USER_ID = "USER_ID";

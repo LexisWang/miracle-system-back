@@ -40,7 +40,7 @@
         updater_id,updater_name,version,
         deleted
     </sql>
-    <select id="orgOptsData" resultType="com.miracle.worm_cat.dto.system.organization.OrgOptsDTO">
+    <select id="orgOptsData" resultType="com.miracle.worm_cat.dto.system.TreeOptsDTO">
         SELECT id `value`, org_name `label`, scope_key `scopeKey` FROM sys_org WHERE p_id = #{pid};
     </select>
 </mapper>

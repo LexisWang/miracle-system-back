@@ -10,15 +10,12 @@ import com.miracle.worm_cat.common.config.easy_excel.ExportCellStyleStrategy;
 import com.miracle.worm_cat.common.constant.BaseConstant;
 import com.miracle.worm_cat.common.constant.CacheKeys;
 import com.miracle.worm_cat.common.domain.CheckResult;
-import com.miracle.worm_cat.common.domain.NormalBinary;
-import com.miracle.worm_cat.common.domain.NormalStatus;
-import com.miracle.worm_cat.common.exception.MiracleException;
 import com.miracle.worm_cat.common.response.RespResult;
 import com.miracle.worm_cat.common.utils.ExportRespUtil;
 import com.miracle.worm_cat.common.utils.RedisUtil;
 import com.miracle.worm_cat.controller.system.dto.OrgParam;
 import com.miracle.worm_cat.domain.system.SysOrg;
-import com.miracle.worm_cat.dto.system.organization.OrgOptsDTO;
+import com.miracle.worm_cat.dto.system.TreeOptsDTO;
 import com.miracle.worm_cat.mapper.system.SysOrgMapper;
 import com.miracle.worm_cat.service.system.SysOrgService;
 import com.miracle.worm_cat.validate.AddGroup;
@@ -56,30 +53,30 @@ public class SysOrgController {
      * 获取父级部门组织选项
      */
     @PostMapping(value = "orgOptsData")
-    public RespResult<List<OrgOptsDTO>> optsData(@RequestParam(value = "flush", defaultValue = "false") Boolean flush) {
-        List<OrgOptsDTO> orgOptsList;
+    public RespResult<List<TreeOptsDTO>> orgOptsData(@RequestParam(value = "flush", defaultValue = "false") Boolean flush) {
+        List<TreeOptsDTO> orgOptsList;
         if (flush) {
             orgOptsList = orgMapper.orgOptsData(0);
             orgChildren(orgOptsList);
-            redisUtil.set(CacheKeys.ORG_SELECT_KEY, orgOptsList);
+            redisUtil.set(CacheKeys.ORG_OPTS_KEY, orgOptsList);
         } else {
-            boolean exists = redisUtil.exists(CacheKeys.ORG_SELECT_KEY);
+            boolean exists = redisUtil.exists(CacheKeys.ORG_OPTS_KEY);
             if (exists) {
-                orgOptsList = (List<OrgOptsDTO>) redisUtil.get(CacheKeys.ORG_SELECT_KEY);
+                orgOptsList = (List<TreeOptsDTO>) redisUtil.get(CacheKeys.ORG_OPTS_KEY);
             } else {
                 orgOptsList = orgMapper.orgOptsData(0);
                 orgChildren(orgOptsList);
-                redisUtil.set(CacheKeys.ORG_SELECT_KEY, orgOptsList);
+                redisUtil.set(CacheKeys.ORG_OPTS_KEY, orgOptsList);
             }
         }
         return RespResult.success(orgOptsList);
     }
 
     /**
-     * 判断组织名获取组织代码是否重复
+     * 判断组织名或取组织代码是否重复
      */
     @PostMapping(value = "checkExist")
-    public RespResult<CheckResult> checkOrgExist(SysOrg org) {
+    public RespResult<CheckResult> checkOrgExist(@RequestBody SysOrg org) {
         CheckResult checkRes = new CheckResult(false, "");
         boolean needCheckCode = !StringUtils.isEmpty(org.getOrgCode());
         boolean needCheckName = !StringUtils.isEmpty(org.getOrgName());
@@ -148,15 +145,15 @@ public class SysOrgController {
      * 部门组织新增
      */
     @PostMapping(value = "orgAddData")
-    public RespResult<String> orgAddData(@RequestBody @Validated({AddGroup.class}) SysOrg org,
-                                         HttpServletRequest request) {
+    public RespResult<?> orgAddData(@RequestBody @Validated({AddGroup.class}) SysOrg org,
+                                    HttpServletRequest request) {
         Long userid = Long.valueOf(request.getParameter(BaseConstant.USER_ID));
         String nickname = request.getParameter(BaseConstant.USER_NICKNAME);
 
         //1.校验是否重复
         CheckResult existResult = checkOrgExist(org).getData();
         if (existResult.getOk()) {
-            return RespResult.success(existResult.getMsg());
+            return RespResult.validateFailed(existResult.getMsg());
         }
 
         //2.填充权限码
@@ -166,7 +163,7 @@ public class SysOrgController {
         } else {
             SysOrg pOrg = orgMapper.selectById(pId);
             if (null != pOrg) {
-                org.setScopeKey(pOrg.getScopeKey());
+                org.setScopeKey(pOrg.getScopeKey() + "-" + org.getSortNo());
             }
         }
 
@@ -177,7 +174,7 @@ public class SysOrgController {
         org.setUpdaterName(nickname);
 
         orgService.save(org);
-        optsData(true);
+        orgOptsData(true);
         return RespResult.success();
     }
 
@@ -185,9 +182,9 @@ public class SysOrgController {
      * 部门组织删除
      */
     @DeleteMapping(value = "orgDeleteData")
-    public RespResult<String> orgDeleteData(@RequestBody List<Integer> ids,
-                                            @RequestParam("remark") String remark,
-                                            HttpServletRequest request) {
+    public RespResult<?> orgDeleteData(@RequestBody List<Integer> ids,
+                                       @RequestParam("remark") String remark,
+                                       HttpServletRequest request) {
         String nickname = request.getParameter(BaseConstant.USER_NICKNAME);
 
         LambdaUpdateWrapper<SysOrg> updateWrapper = new LambdaUpdateWrapper<>();
@@ -196,7 +193,7 @@ public class SysOrgController {
         orgService.update(updateWrapper);
         int effectRows = orgMapper.deleteBatchIds(ids);
         if (effectRows > 0) {
-            optsData(true);
+            orgOptsData(true);
         }
         return RespResult.success();
     }
@@ -205,27 +202,27 @@ public class SysOrgController {
      * 部门组织修改
      */
     @PutMapping(value = "orgUpdateData")
-    public RespResult<String> orgUpdateData(@RequestBody @Validated({UpdateGroup.class}) SysOrg org,
-                                            HttpServletRequest request) {
+    public RespResult<?> orgUpdateData(@RequestBody @Validated({UpdateGroup.class}) SysOrg org,
+                                       HttpServletRequest request) {
         Long userid = Long.valueOf(request.getParameter(BaseConstant.USER_ID));
         String nickname = request.getParameter(BaseConstant.USER_NICKNAME);
 
         //1.校验是否重复
         CheckResult existResult = checkOrgExist(org).getData();
         if (existResult.getOk()) {
-            return RespResult.success(existResult.getMsg());
+            return RespResult.validateFailed(existResult.getMsg());
         }
 
         //2.填充权限码
         SysOrg oldOrg = orgMapper.selectById(org.getId());
         Integer pId = org.getpId();
-        if (!oldOrg.getpId().equals(org.getpId())) {
+        if (null != pId && !oldOrg.getpId().equals(pId)) {
             if (pId == 0) {
                 org.setScopeKey("1");
             } else {
                 SysOrg pOrg = orgMapper.selectById(pId);
                 if (null != pOrg) {
-                    org.setScopeKey(pOrg.getScopeKey());
+                    org.setScopeKey(pOrg.getScopeKey() + "-" + org.getSortNo());
                 }
             }
         }
@@ -237,7 +234,7 @@ public class SysOrgController {
 
         int effectRows = orgMapper.updateById(org);
         if (effectRows > 0) {
-            optsData(true);
+            orgOptsData(true);
         }
         return RespResult.success();
     }
@@ -252,10 +249,19 @@ public class SysOrgController {
         wrapper.like(!StringUtils.isBlank(param.getOrgCode()), SysOrg::getOrgCode, param.getOrgCode());
         wrapper.like(!StringUtils.isBlank(param.getOrgName()), SysOrg::getOrgName, param.getOrgName());
         if (null != param.getOrgStatus()) {
-            wrapper.eq(param.getOrgStatus().size() == 1, SysOrg::getOrgStatus, param.getOrgStatus().get(0));
-            wrapper.in(param.getOrgStatus().size() > 1, SysOrg::getOrgStatus, param.getOrgStatus());
+            if (param.getOrgStatus().size() == 1) {
+                wrapper.eq(SysOrg::getOrgStatus, param.getOrgStatus().get(0));
+            } else if (param.getOrgStatus().size() > 1) {
+                wrapper.in(SysOrg::getOrgStatus, param.getOrgStatus());
+            }
         }
-        wrapper.in(null != param.getPidCascade(), SysOrg::getpId, param.getPidCascade());
+        if (null != param.getPidCascade()) {
+            if (param.getPidCascade().size() == 1) {
+                wrapper.eq(SysOrg::getpId, param.getPidCascade().get(0));
+            } else if (param.getPidCascade().size() > 1) {
+                wrapper.in(SysOrg::getpId, param.getPidCascade());
+            }
+        }
         wrapper.ge(null != param.getCreateTimeStart(), SysOrg::getCreateTime, param.getCreateTimeStart());
         wrapper.lt(null != param.getCreateTimeEnd(), SysOrg::getCreateTime, param.getCreateTimeEnd());
         if (!StringUtils.isBlank(param.getOrgNames())) {
@@ -283,9 +289,9 @@ public class SysOrgController {
     /**
      * 递归获取部门组织选项
      */
-    private void orgChildren(List<OrgOptsDTO> data) {
-        for (OrgOptsDTO datum : data) {
-            List<OrgOptsDTO> children = orgMapper.orgOptsData(datum.getValue());
+    private void orgChildren(List<TreeOptsDTO> data) {
+        for (TreeOptsDTO datum : data) {
+            List<TreeOptsDTO> children = orgMapper.orgOptsData(datum.getValue());
             if (null == children || children.size() == 0) {
                 datum.setChildren(new ArrayList<>());
             } else {

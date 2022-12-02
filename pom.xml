@@ -104,12 +104,6 @@
             <artifactId>mybatis-plus-join</artifactId>
             <version>${mybatis-plus-join.version}</version>
         </dependency>
-        <!-- 日期时间处理工具 -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.12.1</version>
-        </dependency>
         <!-- redis 缓存依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

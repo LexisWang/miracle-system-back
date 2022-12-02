@@ -9,13 +9,14 @@
             <result property="roleCode" column="role_code" jdbcType="VARCHAR"/>
             <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
             <result property="roleDesc" column="role_desc" jdbcType="VARCHAR"/>
-            <result property="roleStatus" column="role_status" jdbcType="TINYINT"/>
-            <result property="isLeaf" column="is_leaf" jdbcType="BIT"/>
-            <result property="sortNo" column="sort_no" jdbcType="TINYINT"/>
+            <result property="roleStatus" column="role_status" jdbcType="INTEGER"/>
+            <result property="isLeaf" column="is_leaf" jdbcType="INTEGER"/>
+            <result property="sortNo" column="sort_no" jdbcType="INTEGER"/>
             <result property="scopeKey" column="scope_key" jdbcType="VARCHAR"/>
             <result property="orgId" column="org_id" jdbcType="INTEGER"/>
             <result property="orgIds" column="org_ids" jdbcType="VARCHAR"/>
             <result property="orgName" column="org_name" jdbcType="VARCHAR"/>
+            <result property="roleRemark" column="role_remark" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="BIGINT"/>
             <result property="updateTime" column="update_time" jdbcType="BIGINT"/>
             <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
@@ -23,16 +24,19 @@
             <result property="updaterId" column="updater_id" jdbcType="BIGINT"/>
             <result property="updaterName" column="updater_name" jdbcType="VARCHAR"/>
             <result property="version" column="version" jdbcType="SMALLINT"/>
-            <result property="deleted" column="deleted" jdbcType="BIT"/>
+            <result property="deleted" column="deleted" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,role_code,role_name,
         role_desc,role_status,is_leaf,
         sort_no,scope_key,org_id,
-        org_ids,org_name,create_time,
-        update_time,creator_id,creator_name,
-        updater_id,updater_name,version,
-        deleted
+        org_ids,org_name,role_remark,
+        create_time,update_time,creator_id,
+        creator_name,updater_id,updater_name,
+        version,deleted
     </sql>
+    <select id="orgOptsData" resultType="com.miracle.worm_cat.dto.system.BaseOptsDTO">
+        SELECT id `value`, org_name `label` FROM sys_role WHERE org_id = #{orgId};
+    </select>
 </mapper>

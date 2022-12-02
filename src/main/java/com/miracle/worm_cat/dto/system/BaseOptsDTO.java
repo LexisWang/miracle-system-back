@@ -1,20 +1,17 @@
-package com.miracle.worm_cat.dto.system.organization;
+package com.miracle.worm_cat.dto.system;
 
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * author: Miracle-
  * time: 2022/11/25 21:01
  */
 @Data
-public class OrgOptsDTO implements Serializable {
+public class BaseOptsDTO implements Serializable {
     private Integer value;
     private String label;
-    private String scopeKey;
-    private List<OrgOptsDTO> children;
 
     private static final long serialVersionUID = 1L;
 }

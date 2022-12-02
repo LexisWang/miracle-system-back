@@ -23,13 +23,13 @@ import java.util.Map;
 public class GlobalExceptHandler {
 
     @ExceptionHandler(value = MiracleException.class)
-    public RespResult<Object> miracleExceptionHandler(MiracleException exception) {
+    public RespResult<?> miracleExceptionHandler(MiracleException exception) {
         log.error("Happen MiracleException Exception: " + exception.getMessage());
         return RespResult.failure(exception.getErrCode(), exception.getMessage());
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public RespResult<Object> methodArgumentNotValidHandler(MethodArgumentNotValidException exception) {
+    public RespResult<?> methodArgumentNotValidHandler(MethodArgumentNotValidException exception) {
         Map<String, String> errMap = new HashMap<>();
         BindingResult bindingResult = exception.getBindingResult();
         if (bindingResult.hasErrors()) {
@@ -43,7 +43,7 @@ public class GlobalExceptHandler {
     }
 
     @ExceptionHandler(value = BindException.class)
-    public RespResult<Object> bindExceptionHandler(BindException exception) {
+    public RespResult<?> bindExceptionHandler(BindException exception) {
         Map<String, String> errMap = new HashMap<>();
         BindingResult bindingResult = exception.getBindingResult();
         if (bindingResult.hasErrors()) {
@@ -57,7 +57,7 @@ public class GlobalExceptHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public RespResult<Object> defaultExceptionHandler(Exception exception) {
+    public RespResult<?> defaultExceptionHandler(Exception exception) {
         log.error("Happen Default Exception: " + exception.getMessage());
         return RespResult.failure(BaseConstant.RESPONSE_CODE_FAILURE, exception.getMessage());
     }

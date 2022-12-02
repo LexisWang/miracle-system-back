@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miracle.worm_cat.mapper.system.SysRoleMenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.miracle.worm_cat.domain.system.SysRoleMenu">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+            <result property="menuId" column="menu_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,role_id,menu_id
+    </sql>
+
+    <select id="menusByRoleId" resultType="java.lang.Integer">
+        SELECT menu_id FROM sys_role_menu WHERE role_id = #{roleId}
+    </select>
+    <select id="authMenuListByRole" resultType="com.miracle.worm_cat.dto.system.staff.RoleMenuDTO">
+        SELECT sm.id, sm.menu_name `name`
+        FROM sys_role_menu srm
+                 INNER JOIN sys_menu sm ON sm.id = srm.menu_id
+        WHERE role_id = #{roleId} AND sm.p_id = #{pId};
+    </select>
+</mapper>

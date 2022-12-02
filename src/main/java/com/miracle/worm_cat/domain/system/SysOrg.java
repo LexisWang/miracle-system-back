@@ -3,10 +3,9 @@ package com.miracle.worm_cat.domain.system;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
-import com.miracle.worm_cat.common.config.easy_excel.LongDateConvertString;
+import com.miracle.worm_cat.common.config.easy_excel.LongDateConverter;
 import com.miracle.worm_cat.common.config.easy_excel.NormalBinaryToString;
 import com.miracle.worm_cat.common.config.easy_excel.NormalStatusToString;
-import com.miracle.worm_cat.common.domain.NormalStatus;
 import com.miracle.worm_cat.validate.AddGroup;
 import com.miracle.worm_cat.validate.EnumValue;
 import com.miracle.worm_cat.validate.UpdateGroup;
@@ -149,14 +148,14 @@ public class SysOrg implements Serializable {
     /**
      * 创建时间
      */
-    @ExcelProperty(value = "创建时间", index = 12, converter = LongDateConvertString.class)
+    @ExcelProperty(value = "创建时间", index = 12, converter = LongDateConverter.class)
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Long createTime;
 
     /**
      * 更新时间
      */
-    @ExcelProperty(value = "更新时间", index = 13, converter = LongDateConvertString.class)
+    @ExcelProperty(value = "更新时间", index = 13, converter = LongDateConverter.class)
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Long updateTime;
 

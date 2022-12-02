@@ -1,4 +1,4 @@
-package com.miracle.worm_cat.common.config;
+package com.miracle.worm_cat.common.config.mybatis_plus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

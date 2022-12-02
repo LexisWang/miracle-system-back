@@ -1,8 +1,8 @@
 package com.miracle.worm_cat.mapper.system;
 
-import com.miracle.worm_cat.domain.system.SysOrg;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.miracle.worm_cat.dto.system.organization.OrgOptsDTO;
+import com.miracle.worm_cat.domain.system.SysOrg;
+import com.miracle.worm_cat.dto.system.TreeOptsDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface SysOrgMapper extends BaseMapper<SysOrg> {
     /**
      * 获取可选择的部门组织
      */
-    List<OrgOptsDTO> orgOptsData(@Param("pid") Integer pid);
+    List<TreeOptsDTO> orgOptsData(@Param("pid") Integer pid);
 }
 
 

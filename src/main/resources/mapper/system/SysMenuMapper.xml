@@ -5,7 +5,7 @@
 <mapper namespace="com.miracle.worm_cat.mapper.system.SysMenuMapper">
 
     <resultMap id="BaseResultMap" type="com.miracle.worm_cat.domain.system.SysMenu">
-            <id property="id" column="id" jdbcType="BIGINT"/>
+            <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="menuCode" column="menu_code" jdbcType="VARCHAR"/>
             <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
             <result property="menuUrl" column="menu_url" jdbcType="VARCHAR"/>
@@ -14,9 +14,10 @@
             <result property="isLeaf" column="is_leaf" jdbcType="BIT"/>
             <result property="sortNo" column="sort_no" jdbcType="TINYINT"/>
             <result property="tierLevel" column="tier_level" jdbcType="TINYINT"/>
-            <result property="globalSort" column="global_sort" jdbcType="BIGINT"/>
+            <result property="globalSort" column="global_sort" jdbcType="INTEGER"/>
             <result property="pId" column="p_id" jdbcType="INTEGER"/>
             <result property="pIds" column="p_ids" jdbcType="VARCHAR"/>
+            <result property="menuRemark" column="menu_remark" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="BIGINT"/>
             <result property="updateTime" column="update_time" jdbcType="BIGINT"/>
             <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
@@ -32,8 +33,11 @@
         menu_url,menu_icon,menu_status,
         is_leaf,sort_no,tier_level,
         global_sort,p_id,p_ids,
-        create_time,update_time,creator_id,
-        creator_name,updater_id,updater_name,
-        version,deleted
+        menu_remark,create_time,update_time,
+        creator_id,creator_name,updater_id,
+        updater_name,version,deleted
     </sql>
+    <select id="menuOptsData" resultType="com.miracle.worm_cat.dto.system.TreeOptsDTO">
+        SELECT id `value`, menu_name `label` FROM sys_menu WHERE p_id = #{pid};
+    </select>
 </mapper>

@@ -1,7 +1,11 @@
 package com.miracle.worm_cat.mapper.system;
 
-import com.miracle.worm_cat.domain.system.SysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.miracle.worm_cat.domain.system.SysRole;
+import com.miracle.worm_cat.dto.system.BaseOptsDTO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -10,7 +14,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.miracle.worm_cat.domain.system.SysRole
 */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
-
+    /**
+     * 获取可选择的角色
+     */
+    List<BaseOptsDTO> orgOptsData(@Param("orgId") Integer orgId);
 }
 
 

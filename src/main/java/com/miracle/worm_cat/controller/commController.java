@@ -18,7 +18,7 @@ public class commController {
      * 项目跟路径
      */
     @GetMapping(value = "")
-    public RespResult<String> rootResource() {
+    public RespResult<?> rootResource() {
         return RespResult.success("You are access rootResource");
     }
 
@@ -26,7 +26,7 @@ public class commController {
      * 测试校验器
      */
     @PostMapping(value = "checkValidated")
-    public RespResult<String> checkValidated(@RequestBody @Validated({AddGroup.class}) UserDTO userDTO) {
+    public RespResult<?> checkValidated(@RequestBody @Validated({AddGroup.class}) UserDTO userDTO) {
         return RespResult.success("Test validated success");
     }
 

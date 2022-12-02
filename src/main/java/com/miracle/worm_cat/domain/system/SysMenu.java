@@ -1,7 +1,18 @@
 package com.miracle.worm_cat.domain.system;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
+import com.miracle.worm_cat.common.config.easy_excel.LongDateConverter;
+import com.miracle.worm_cat.common.config.easy_excel.NormalBinaryToString;
+import com.miracle.worm_cat.common.config.easy_excel.NormalStatusToString;
+import com.miracle.worm_cat.validate.AddGroup;
+import com.miracle.worm_cat.validate.EnumValue;
+import com.miracle.worm_cat.validate.UpdateGroup;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,114 +24,157 @@ public class SysMenu implements Serializable {
     /**
      * 主键ID
      */
+    @ExcelIgnore
+    @NotNull(message = "主键ID不能为空", groups = {UpdateGroup.class})
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 代码
      */
+    @ExcelProperty(value = "菜单代码", index = 0)
+    @NotBlank(message = "菜单代码不能为空", groups = {AddGroup.class})
+    @Length(min = 4, max = 16, message = "菜单代码长度在4-16之间", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "menu_code")
     private String menuCode;
 
     /**
      * 名称
      */
+    @ExcelProperty(value = "菜单名称", index = 1)
+    @NotBlank(message = "菜单名称不能为空", groups = {AddGroup.class})
+    @Length(min = 4, max = 16, message = "菜单名称度在4-16之间", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "menu_name")
     private String menuName;
 
     /**
      * 路由url
      */
+    @ExcelProperty(value = "菜单路径", index = 2)
+    @NotBlank(message = "菜单路径不能为空", groups = {AddGroup.class})
+    @Length(max = 64, message = "菜单路径长度不能超过64", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "menu_url")
     private String menuUrl;
 
     /**
      * 图标
      */
+    @ExcelIgnore
+    @Length(max = 64, message = "图标长度不能超过64", groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "menu_icon")
     private String menuIcon;
 
     /**
      * 状态
      */
+    @ExcelProperty(value = "菜单状态", index = 3, converter = NormalStatusToString.class)
+    @NotNull(message = "菜单状态不能为空", groups = {AddGroup.class})
+    @EnumValue(values = {-1, 0, 1}, groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "menu_status")
     private Integer menuStatus;
 
     /**
      * 是否叶子
      */
+    @ExcelProperty(value = "是否叶子", index = 4, converter = NormalBinaryToString.class)
+    @NotNull(message = "是否叶子不能为空", groups = {AddGroup.class})
+    @EnumValue(values = {0, 1}, groups = {AddGroup.class, UpdateGroup.class})
     @TableField(value = "is_leaf")
-    private Boolean isLeaf;
+    private Integer isLeaf;
 
     /**
      * 排序号
      */
+    @ExcelProperty(value = "排序号", index = 5)
+    @NotNull(message = "排序号不能为空", groups = {AddGroup.class})
     @TableField(value = "sort_no")
     private Integer sortNo;
 
     /**
      * 层级
      */
+    @ExcelProperty(value = "权限等级", index = 6)
+    @NotNull(message = "权限等级不能为空", groups = {AddGroup.class})
     @TableField(value = "tier_level")
     private Integer tierLevel;
 
     /**
      * 唯一序号(紧凑)
      */
+    @ExcelIgnore
     @TableField(value = "global_sort")
-    private Long globalSort;
+    private Integer globalSort;
 
     /**
      * 父级ID
      */
+    @ExcelIgnore
+    @NotNull(message = "父级ID不能为空", groups = {AddGroup.class})
     @TableField(value = "p_id")
-    private Object pId;
+    private Integer pId;
 
     /**
      * 所有父级ID
      */
+    @ExcelIgnore
+    @NotBlank(message = "所有父级ID不能为空", groups = {AddGroup.class})
     @TableField(value = "p_ids")
     private String pIds;
 
     /**
+     * 备注信息
+     */
+    @ExcelProperty(value = "备注信息", index = 7)
+    @Length(max = 100, message = "备注信息长度不能超过100", groups = {AddGroup.class, UpdateGroup.class})
+    @TableField(value = "menu_remark")
+    private String menuRemark;
+
+    /**
      * 创建时间
      */
-    @TableField(value = "create_time")
+    @ExcelProperty(value = "创建时间", index = 8, converter = LongDateConverter.class)
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Long createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time")
+    @ExcelProperty(value = "更新时间", index = 9, converter = LongDateConverter.class)
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Long updateTime;
 
     /**
      * 创建者ID
      */
+    @ExcelIgnore
     @TableField(value = "creator_id")
     private Long creatorId;
 
     /**
      * 创建者名称
      */
+    @ExcelProperty(value = "创建者", index = 10)
     @TableField(value = "creator_name")
     private String creatorName;
 
     /**
      * 修改者ID
      */
+    @ExcelIgnore
     @TableField(value = "updater_id")
     private Long updaterId;
 
     /**
      * 修改者名称
      */
+    @ExcelProperty(value = "修改者", index = 11)
     @TableField(value = "updater_name")
     private String updaterName;
 
     /**
      * 当前版本
      */
+    @ExcelIgnore
     @Version
     @TableField(value = "version")
     private Integer version;
@@ -128,289 +182,179 @@ public class SysMenu implements Serializable {
     /**
      * 是否逻辑删除
      */
+    @ExcelIgnore
+    @EnumValue(values = {0, 1}, groups = {UpdateGroup.class})
     @TableField(value = "deleted")
-    private Boolean deleted;
+    private Integer deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键ID
-     */
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    /**
-     * 主键ID
-     */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * 代码
-     */
     public String getMenuCode() {
         return menuCode;
     }
 
-    /**
-     * 代码
-     */
     public void setMenuCode(String menuCode) {
         this.menuCode = menuCode;
     }
 
-    /**
-     * 名称
-     */
     public String getMenuName() {
         return menuName;
     }
 
-    /**
-     * 名称
-     */
     public void setMenuName(String menuName) {
         this.menuName = menuName;
     }
 
-    /**
-     * 路由url
-     */
     public String getMenuUrl() {
         return menuUrl;
     }
 
-    /**
-     * 路由url
-     */
     public void setMenuUrl(String menuUrl) {
         this.menuUrl = menuUrl;
     }
 
-    /**
-     * 图标
-     */
     public String getMenuIcon() {
         return menuIcon;
     }
 
-    /**
-     * 图标
-     */
     public void setMenuIcon(String menuIcon) {
         this.menuIcon = menuIcon;
     }
 
-    /**
-     * 状态
-     */
     public Integer getMenuStatus() {
         return menuStatus;
     }
 
-    /**
-     * 状态
-     */
     public void setMenuStatus(Integer menuStatus) {
         this.menuStatus = menuStatus;
     }
 
-    /**
-     * 是否叶子
-     */
-    public Boolean getIsLeaf() {
+    public Integer getIsLeaf() {
         return isLeaf;
     }
 
-    /**
-     * 是否叶子
-     */
-    public void setIsLeaf(Boolean isLeaf) {
+    public void setIsLeaf(Integer isLeaf) {
         this.isLeaf = isLeaf;
     }
 
-    /**
-     * 排序号
-     */
     public Integer getSortNo() {
         return sortNo;
     }
 
-    /**
-     * 排序号
-     */
     public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
     }
 
-    /**
-     * 层级
-     */
     public Integer getTierLevel() {
         return tierLevel;
     }
 
-    /**
-     * 层级
-     */
     public void setTierLevel(Integer tierLevel) {
         this.tierLevel = tierLevel;
     }
 
-    /**
-     * 唯一序号(紧凑)
-     */
-    public Long getGlobalSort() {
+    public Integer getGlobalSort() {
         return globalSort;
     }
 
-    /**
-     * 唯一序号(紧凑)
-     */
-    public void setGlobalSort(Long globalSort) {
+    public void setGlobalSort(Integer globalSort) {
         this.globalSort = globalSort;
     }
 
-    /**
-     * 父级ID
-     */
-    public Object getpId() {
+    public Integer getpId() {
         return pId;
     }
 
-    /**
-     * 父级ID
-     */
-    public void setpId(Object pId) {
+    public void setpId(Integer pId) {
         this.pId = pId;
     }
 
-    /**
-     * 所有父级ID
-     */
     public String getpIds() {
         return pIds;
     }
 
-    /**
-     * 所有父级ID
-     */
     public void setpIds(String pIds) {
         this.pIds = pIds;
     }
 
-    /**
-     * 创建时间
-     */
+    public String getMenuRemark() {
+        return menuRemark;
+    }
+
+    public void setMenuRemark(String menuRemark) {
+        this.menuRemark = menuRemark;
+    }
+
     public Long getCreateTime() {
         return createTime;
     }
 
-    /**
-     * 创建时间
-     */
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 
-    /**
-     * 更新时间
-     */
     public Long getUpdateTime() {
         return updateTime;
     }
 
-    /**
-     * 更新时间
-     */
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
 
-    /**
-     * 创建者ID
-     */
     public Long getCreatorId() {
         return creatorId;
     }
 
-    /**
-     * 创建者ID
-     */
     public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
     }
 
-    /**
-     * 创建者名称
-     */
     public String getCreatorName() {
         return creatorName;
     }
 
-    /**
-     * 创建者名称
-     */
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
     }
 
-    /**
-     * 修改者ID
-     */
     public Long getUpdaterId() {
         return updaterId;
     }
 
-    /**
-     * 修改者ID
-     */
     public void setUpdaterId(Long updaterId) {
         this.updaterId = updaterId;
     }
 
-    /**
-     * 修改者名称
-     */
     public String getUpdaterName() {
         return updaterName;
     }
 
-    /**
-     * 修改者名称
-     */
     public void setUpdaterName(String updaterName) {
         this.updaterName = updaterName;
     }
 
-    /**
-     * 当前版本
-     */
     public Integer getVersion() {
         return version;
     }
 
-    /**
-     * 当前版本
-     */
     public void setVersion(Integer version) {
         this.version = version;
     }
 
-    /**
-     * 是否逻辑删除
-     */
-    public Boolean getDeleted() {
+    public Integer getDeleted() {
         return deleted;
     }
 
-    /**
-     * 是否逻辑删除
-     */
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(Integer deleted) {
         this.deleted = deleted;
     }
 
@@ -438,6 +382,7 @@ public class SysMenu implements Serializable {
             && (this.getGlobalSort() == null ? other.getGlobalSort() == null : this.getGlobalSort().equals(other.getGlobalSort()))
             && (this.getpId() == null ? other.getpId() == null : this.getpId().equals(other.getpId()))
             && (this.getpIds() == null ? other.getpIds() == null : this.getpIds().equals(other.getpIds()))
+            && (this.getMenuRemark() == null ? other.getMenuRemark() == null : this.getMenuRemark().equals(other.getMenuRemark()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getCreatorId() == null ? other.getCreatorId() == null : this.getCreatorId().equals(other.getCreatorId()))
@@ -464,6 +409,7 @@ public class SysMenu implements Serializable {
         result = prime * result + ((getGlobalSort() == null) ? 0 : getGlobalSort().hashCode());
         result = prime * result + ((getpId() == null) ? 0 : getpId().hashCode());
         result = prime * result + ((getpIds() == null) ? 0 : getpIds().hashCode());
+        result = prime * result + ((getMenuRemark() == null) ? 0 : getMenuRemark().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getCreatorId() == null) ? 0 : getCreatorId().hashCode());
@@ -493,6 +439,7 @@ public class SysMenu implements Serializable {
         sb.append(", globalSort=").append(globalSort);
         sb.append(", pId=").append(pId);
         sb.append(", pIds=").append(pIds);
+        sb.append(", menuRemark=").append(menuRemark);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", creatorId=").append(creatorId);
