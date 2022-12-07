@@ -131,6 +131,7 @@ public class SysButtonController {
         SysMenu menu = menuService.getById(button.getMenuId());
         button.setMenuName(menu.getMenuName());
         buttonService.save(button);
+        buttonOptsData(true);
         return RespResult.success();
     }
 
@@ -153,7 +154,10 @@ public class SysButtonController {
             SysMenu menu = menuService.getById(button.getMenuId());
             button.setMenuName(menu.getMenuName());
         }
-        buttonService.updateById(button);
+        int effectRows = buttonMapper.updateById(button);
+        if (effectRows > 0) {
+            buttonOptsData(true);
+        }
         return RespResult.success();
     }
 

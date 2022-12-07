@@ -8,6 +8,7 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="roleCode" column="role_code" jdbcType="VARCHAR"/>
             <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+            <result property="roleCategory" column="role_category" jdbcType="INTEGER"/>
             <result property="roleDesc" column="role_desc" jdbcType="VARCHAR"/>
             <result property="roleStatus" column="role_status" jdbcType="INTEGER"/>
             <result property="isLeaf" column="is_leaf" jdbcType="INTEGER"/>
@@ -28,7 +29,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,role_code,role_name,
+        id,role_code,role_name,role_category,
         role_desc,role_status,is_leaf,
         sort_no,scope_key,org_id,
         org_ids,org_name,role_remark,
@@ -37,6 +38,6 @@
         version,deleted
     </sql>
     <select id="orgOptsData" resultType="com.miracle.worm_cat.dto.system.BaseOptsDTO">
-        SELECT id `value`, org_name `label` FROM sys_role WHERE org_id = #{orgId};
+        SELECT id `value`, role_name `label` FROM sys_role WHERE org_id = #{orgId};
     </select>
 </mapper>

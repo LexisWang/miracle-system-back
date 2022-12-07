@@ -54,6 +54,14 @@ public class SysRole implements Serializable {
     private String roleName;
 
     /**
+     * 角色类型
+     * */
+    @ExcelIgnore
+    @NotNull(message = "角色类型不能为空", groups = {AddGroup.class})
+    @TableField(value = "role_category")
+    private Integer roleCategory;
+
+    /**
      * 描述
      */
     @ExcelProperty(value = "角色描述", index = 2)

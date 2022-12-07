@@ -13,19 +13,12 @@ import java.util.List;
 @Data
 public class LoginResDTO {
 
+    private Long userid;
     private String nickname;
+    private Long superId;
 
-    private List<MenuResDTO> permMenus;
-
+    private List<RoleMenuDTO> roleMenus;
+    private List<RoleButtonDTO> roleButtons;
     private String jwtToken;
-
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class MenuResDTO {
-        private String name;
-        private List<MenuResDTO> children;
-    }
 
 }

@@ -21,6 +21,7 @@
         <freemarker.version>2.3.28</freemarker.version>
         <mybatis-plus-join.version>1.1.8</mybatis-plus-join.version>
         <easyexcel.version>3.0.2</easyexcel.version>
+        <jjwt.version>0.9.0</jjwt.version>
     </properties>
 
     <dependencies>
@@ -114,6 +115,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
             <version>${easyexcel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
         </dependency>
     </dependencies>
 

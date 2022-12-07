@@ -65,22 +65,27 @@ public class SysRoleController {
     @Resource
     private SysRoleButtonService roleButtonService;
 
+    @Resource
+    private StaffController staffController;
+
     /**
      * 获取角色选择
      */
     @PostMapping(value = "roleOptsData")
-    public RespResult<List<BaseOptsDTO>> roleOptsData(@RequestParam(value = "flush", defaultValue = "false") Boolean flush) {
+    public RespResult<List<BaseOptsDTO>> roleOptsData(@RequestParam(value = "flush", defaultValue = "false") Boolean flush,
+                                                      @RequestParam(value = "orgId") Integer orgId) {
+        String cacheKey = CacheKeys.ROLE_OPTS_KEY + orgId;
         List<BaseOptsDTO> roleOptsList;
         if (flush) {
-            roleOptsList = roleMapper.orgOptsData(0);
-            redisUtil.set(CacheKeys.ROLE_OPTS_KEY, roleOptsList);
+            roleOptsList = roleMapper.orgOptsData(orgId);
+            redisUtil.set(cacheKey, roleOptsList);
         } else {
-            boolean exists = redisUtil.exists(CacheKeys.ROLE_OPTS_KEY);
+            boolean exists = redisUtil.exists(cacheKey);
             if (exists) {
-                roleOptsList = (List<BaseOptsDTO>) redisUtil.get(CacheKeys.ROLE_OPTS_KEY);
+                roleOptsList = (List<BaseOptsDTO>) redisUtil.get(cacheKey);
             } else {
-                roleOptsList = roleMapper.orgOptsData(0);
-                redisUtil.set(CacheKeys.ROLE_OPTS_KEY, roleOptsList);
+                roleOptsList = roleMapper.orgOptsData(orgId);
+                redisUtil.set(cacheKey, roleOptsList);
             }
         }
         return RespResult.success(roleOptsList);
@@ -90,7 +95,7 @@ public class SysRoleController {
      * 判断角色名或角色代码是否重复
      */
     @PostMapping(value = "checkExist")
-    public RespResult<CheckResult> checkOrgExist(SysRole role) {
+    public RespResult<CheckResult> checkOrgExist(@RequestBody SysRole role) {
         CheckResult checkRes = new CheckResult(false, "");
         boolean needCheckCode = !StringUtils.isEmpty(role.getRoleCode());
         boolean needCheckName = !StringUtils.isEmpty(role.getRoleCode());
@@ -189,7 +194,7 @@ public class SysRoleController {
         role.setUpdaterName(nickname);
 
         roleService.save(role);
-        roleOptsData(true);
+        roleOptsData(true, role.getOrgId());
         return RespResult.success();
     }
 
@@ -208,7 +213,7 @@ public class SysRoleController {
         roleService.update(updateWrapper);
         int effectRows = roleMapper.deleteBatchIds(ids);
         if (effectRows > 0) {
-            roleOptsData(true);
+            roleOptsData(true, roleService.getById(ids.get(0)).getOrgId());
         }
         return RespResult.success();
     }
@@ -251,7 +256,7 @@ public class SysRoleController {
 
         int effectRows = roleMapper.updateById(role);
         if (effectRows > 0) {
-            roleOptsData(true);
+            roleOptsData(true, null == role.getOrgId() ? oldRole.getOrgId(): role.getOrgId());
         }
         return RespResult.success();
     }
@@ -342,6 +347,7 @@ public class SysRoleController {
         rolePermService.remove(updateWrapper);
         //2.新增数据
         rolePermService.saveBatch(rolePerms);
+        staffController.getLoginStaffPerms(roleId, true);
         return RespResult.success();
     }
 
@@ -357,6 +363,7 @@ public class SysRoleController {
         roleMenuService.remove(updateWrapper);
         //2.新增数据
         roleMenuService.saveBatch(roleMenus);
+        staffController.getLoginStaffMenus(roleId, true);
         return RespResult.success();
     }
 
@@ -372,6 +379,7 @@ public class SysRoleController {
         roleButtonService.remove(updateWrapper);
         //2.新增数据
         roleButtonService.saveBatch(roleButtons);
+        staffController.getLoginStaffButtons(roleId, true);
         return RespResult.success();
     }
 

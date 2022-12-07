@@ -15,6 +15,7 @@
             <result property="inviteCode" column="invite_code" jdbcType="VARCHAR"/>
             <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
             <result property="superId" column="super_id" jdbcType="BIGINT"/>
+            <result property="superName" column="super_name" jdbcType="VARCHAR"/>
             <result property="orgId" column="org_id" jdbcType="INTEGER"/>
             <result property="orgName" column="org_name" jdbcType="VARCHAR"/>
             <result property="roleId" column="role_id" jdbcType="INTEGER"/>
@@ -34,10 +35,23 @@
         id,username,password,
         nickname,email,remark,
         staff_status,invite_code,mobile,
-        super_id,org_id,org_name,
-        role_id,role_name,scope_key,
+        super_id,super_name,org_id,org_name,
+        role_id,role_name,scope_key,,sort_no,
         create_time,update_time,creator_id,
         creator_name,updater_id,updater_name,
         version,deleted
     </sql>
+    <select id="staffOptsData" resultType="com.miracle.worm_cat.dto.system.BaseOptsDTO">
+        SELECT ss.id `value`, ss.nickname `label`
+        FROM sys_staff ss
+                 INNER JOIN sys_role sr ON sr.id = ss.role_id
+        WHERE sr.role_category = #{roleCategory}
+          AND staff_status = #{staffStatus};
+    </select>
+    <select id="staffSuperData" resultType="com.miracle.worm_cat.dto.system.BaseOptsDTO">
+        SELECT id `value`, nickname `label` FROM sys_staff WHERE deleted = 0 AND scope_key NOT LIKE '%$%';
+    </select>
+    <select id="staffCrewsData" resultType="com.miracle.worm_cat.dto.system.BaseOptsDTO">
+        SELECT id `value`, nickname `label` FROM sys_staff WHERE deleted = 0 AND super_id = #{superId};
+    </select>
 </mapper>
