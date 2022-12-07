@@ -259,8 +259,12 @@ public class StaffController {
     public RespResult<Page<SysStaff>> rolePageData(@RequestBody StaffParam param) {
         Page<SysStaff> rolePage = new Page<>(param.getCurrent(), param.getSize());
         LambdaQueryWrapper<SysStaff> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isBlank(param.getUsername()), SysStaff::getUsername, param.getUsername());
-        wrapper.like(!StringUtils.isBlank(param.getNickname()), SysStaff::getNickname, param.getNickname());
+        if (!StringUtils.isBlank(param.getUsername())) {
+            wrapper.like(SysStaff::getUsername, param.getUsername().trim());
+        }
+        if (!StringUtils.isBlank(param.getNickname())) {
+            wrapper.like(SysStaff::getNickname, param.getNickname().trim());
+        }
         wrapper.eq(null != param.getRoleId(), SysStaff::getRoleId, param.getRoleId());
         if (null != param.getStaffStatus()) {
             if (param.getStaffStatus().size() == 1) {

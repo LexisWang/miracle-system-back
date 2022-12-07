@@ -82,7 +82,7 @@ public class MiracleJwtFilter extends OncePerRequestFilter implements Ordered {
             if (null != userInfo) {
                 Long loginTime = (Long) redisUtil.get(CacheKeys.STAFF_JWT_START_TIME + userInfo.getUserid());
                 if (loginTime > userInfo.getLoginTime()) {
-                    response.getWriter().write(objectMapper.writeValueAsString(RespResult.logoutOrUnauthorized("登录信息已过期, 请重新登录")));
+                    response.getWriter().write(objectMapper.writeValueAsString(RespResult.logoutOrUnauthorized("其他地方登录了,或账号信息有变动,需要重新登录")));
                     return;
                 }
                 //3.3.判断是否有权限访问

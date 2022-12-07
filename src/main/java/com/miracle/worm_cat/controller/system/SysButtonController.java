@@ -168,8 +168,12 @@ public class SysButtonController {
     public RespResult<Page<SysButton>> buttonPageData(@RequestBody ButtonParam param) {
         Page<SysButton> buttonPage = new Page<>();
         LambdaQueryWrapper<SysButton> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isBlank(param.getCode()), SysButton::getCode, param.getCode());
-        wrapper.like(!StringUtils.isBlank(param.getName()), SysButton::getName, param.getName());
+        if (!StringUtils.isBlank(param.getCode())) {
+            wrapper.like(SysButton::getCode, param.getCode().trim());
+        }
+        if (!StringUtils.isBlank(param.getName())) {
+            wrapper.like(SysButton::getName, param.getName().trim());
+        }
         if (null != param.getMenuIdCascade()) {
             if (param.getMenuIdCascade().size() == 1) {
                 wrapper.eq(SysButton::getMenuId, param.getMenuIdCascade().get(0));

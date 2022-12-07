@@ -268,8 +268,12 @@ public class SysRoleController {
     public RespResult<Page<SysRole>> rolePageData(@RequestBody RoleParam param) {
         Page<SysRole> rolePage = new Page<>(param.getCurrent(), param.getSize());
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isBlank(param.getRoleCode()), SysRole::getRoleCode, param.getRoleCode());
-        wrapper.like(!StringUtils.isBlank(param.getRoleName()), SysRole::getRoleName, param.getRoleName());
+        if (!StringUtils.isBlank(param.getRoleCode())) {
+            wrapper.like(SysRole::getRoleCode, param.getRoleCode().trim());
+        }
+        if (!StringUtils.isBlank(param.getRoleName())) {
+            wrapper.like(SysRole::getRoleName, param.getRoleName().trim());
+        }
         if (null != param.getRoleStatus()) {
             if (param.getRoleStatus().size() == 1) {
                 wrapper.eq(SysRole::getRoleStatus, param.getRoleStatus().get(0));

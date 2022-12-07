@@ -222,8 +222,12 @@ public class SysPermController {
     public RespResult<Page<SysPerm>> permPageData(@RequestBody PermParam param) {
         Page<SysPerm> permPage = new Page<>(param.getCurrent(), param.getSize());
         LambdaQueryWrapper<SysPerm> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isBlank(param.getPermCode()), SysPerm::getPermCode, param.getPermCode());
-        wrapper.like(!StringUtils.isBlank(param.getPermName()), SysPerm::getPermName, param.getPermName());
+        if (!StringUtils.isBlank(param.getPermCode())) {
+            wrapper.like(SysPerm::getPermCode, param.getPermCode().trim());
+        }
+        if (!StringUtils.isBlank(param.getPermName())) {
+            wrapper.like(SysPerm::getPermName, param.getPermName().trim());
+        }
         if (null != param.getPermStatus()) {
             if (param.getPermStatus().size() == 1) {
                 wrapper.eq(SysPerm::getPermStatus, param.getPermStatus().get(0));

@@ -222,8 +222,12 @@ public class SysMenuController {
     public RespResult<Page<SysMenu>> menuPageData(@RequestBody MenuParam param) {
         Page<SysMenu> menuPage = new Page<>(param.getCurrent(), param.getSize());
         LambdaQueryWrapper<SysMenu> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isBlank(param.getMenuCode()), SysMenu::getMenuCode, param.getMenuCode());
-        wrapper.like(!StringUtils.isBlank(param.getMenuName()), SysMenu::getMenuName, param.getMenuName());
+        if (!StringUtils.isBlank(param.getMenuCode())) {
+            wrapper.like(SysMenu::getMenuCode, param.getMenuCode().trim());
+        }
+        if (!StringUtils.isBlank(param.getMenuName())) {
+            wrapper.like(SysMenu::getMenuName, param.getMenuName().trim());
+        }
         if (null != param.getMenuStatus()) {
             if (param.getMenuStatus().size() == 1) {
                 wrapper.eq(SysMenu::getMenuStatus, param.getMenuStatus().get(0));

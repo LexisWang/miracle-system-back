@@ -246,8 +246,12 @@ public class SysOrgController {
     public RespResult<Page<SysOrg>> orgPageData(@RequestBody OrgParam param) {
         Page<SysOrg> orgPage = new Page<>(param.getCurrent(), param.getSize());
         LambdaQueryWrapper<SysOrg> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isBlank(param.getOrgCode()), SysOrg::getOrgCode, param.getOrgCode());
-        wrapper.like(!StringUtils.isBlank(param.getOrgName()), SysOrg::getOrgName, param.getOrgName());
+        if (!StringUtils.isBlank(param.getOrgCode())) {
+            wrapper.like(SysOrg::getOrgCode, param.getOrgCode().trim());
+        }
+        if (!StringUtils.isBlank(param.getOrgName())) {
+            wrapper.like(SysOrg::getOrgName, param.getOrgName().trim());
+        }
         if (null != param.getOrgStatus()) {
             if (param.getOrgStatus().size() == 1) {
                 wrapper.eq(SysOrg::getOrgStatus, param.getOrgStatus().get(0));
