@@ -313,11 +313,11 @@ public class StaffController {
         wrapper.eq(SysStaff::getUsername, loginData.getUsername()).last("LIMIT 1");
         SysStaff staff = staffService.getOne(wrapper);
         if (null == staff) {
-            return RespResult.failure(BaseConstant.PARAM_VALIDATE_FAIL, "账号不存在");
+            return RespResult.failure("账号不存在");
         } else if (staff.getStaffStatus() == 0) {
-            return RespResult.failure(BaseConstant.PARAM_VALIDATE_FAIL, "该账户已被冻结，请联系管理员");
+            return RespResult.failure("该账户已被冻结，请联系管理员");
         } else if (!passwordEncoder.matches(loginData.getPassword(), staff.getPassword())){
-            return RespResult.failure(BaseConstant.PARAM_VALIDATE_FAIL, "密码错误");
+            return RespResult.failure("密码错误");
         }
         //1.获取该角色下的权限list
         Integer roleId = staff.getRoleId();
@@ -350,7 +350,6 @@ public class StaffController {
         LoginResDTO resDTO = new LoginResDTO();
         resDTO.setRoleButtons(getLoginStaffButtons(1, false));
 
-        resDTO.setNickname("奇迹哥");
         LambdaQueryWrapper<SysStaff> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysStaff::getUsername, loginData.getUsername()).last("LIMIT 1");
         SysStaff staff = staffService.getOne(wrapper);
@@ -365,7 +364,9 @@ public class StaffController {
         jwtMap.put("loginTime", loginTime);
         String jwtToken = jwtUtil.generatorToken(jwtMap);
         resDTO.setJwtToken(jwtToken);
-
+        resDTO.setUserid(staff.getId());
+        resDTO.setNickname("奇迹哥");
+        resDTO.setSuperId(staff.getSuperId());
         String permMenusStr = "[\n" +
                 "  {\n" +
                 "    \"name\": \"home\",\n" +

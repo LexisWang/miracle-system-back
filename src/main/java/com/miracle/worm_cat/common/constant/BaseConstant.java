@@ -26,6 +26,7 @@ public interface BaseConstant {
     String USER_SCOPE = "USER_SCOPE";
     String USER_ROLE_ID = "USER_ROLE_ID";
     String USER_ROLE_TYPE = "USER_ROLE_TYPE";
+    String REQUEST_USER = "reqUser";
 
     /** 加密 Token 的密钥 */
     String TOKEN_SIGNATURE_SECRET = "-lx7b@9nzhat9rtdp986f(kbdg35m0fkj$zif_)y5!v7lm=y@o";

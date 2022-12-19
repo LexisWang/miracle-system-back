@@ -1,7 +1,7 @@
 package com.miracle.worm_cat.common.exception;
 
-import com.miracle.worm_cat.common.constant.BaseConstant;
 import com.miracle.worm_cat.common.response.RespResult;
+import com.miracle.worm_cat.common.response.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -39,7 +39,7 @@ public class GlobalExceptHandler {
         }
 
         log.error("Happen MethodArgumentNotValidException Exception: " + errMap);
-        return RespResult.failure(BaseConstant.PARAM_VALIDATE_FAIL, errMap);
+        return RespResult.failure(ResultCode.VALIDATE_FAILED.getCode(), errMap);
     }
 
     @ExceptionHandler(value = BindException.class)
@@ -53,12 +53,12 @@ public class GlobalExceptHandler {
         }
 
         log.error("Happen BindException Exception: " + errMap);
-        return RespResult.failure(BaseConstant.BIND_EXCEPTION, errMap);
+        return RespResult.failure(ResultCode.BIND_EXCEPTION.getCode(), errMap);
     }
 
     @ExceptionHandler(value = Exception.class)
     public RespResult<?> defaultExceptionHandler(Exception exception) {
         log.error("Happen Default Exception: " + exception.getMessage());
-        return RespResult.failure(BaseConstant.RESPONSE_CODE_FAILURE, exception.getMessage());
+        return RespResult.failure(ResultCode.FAILURE.getCode(), exception.getMessage());
     }
 }

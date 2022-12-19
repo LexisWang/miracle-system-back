@@ -22,6 +22,7 @@
         <mybatis-plus-join.version>1.1.8</mybatis-plus-join.version>
         <easyexcel.version>3.0.2</easyexcel.version>
         <jjwt.version>0.9.0</jjwt.version>
+        <aliyun-sdk-oss.version>3.10.2</aliyun-sdk-oss.version>
     </properties>
 
     <dependencies>
@@ -116,10 +117,22 @@
             <artifactId>easyexcel</artifactId>
             <version>${easyexcel.version}</version>
         </dependency>
+        <!-- jwt工具依赖 -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
+        </dependency>
+        <!-- websocket依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- OSS文件上传管理 -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${aliyun-sdk-oss.version}</version>
         </dependency>
     </dependencies>
 

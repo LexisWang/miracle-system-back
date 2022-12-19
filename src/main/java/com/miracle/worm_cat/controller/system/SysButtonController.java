@@ -166,7 +166,7 @@ public class SysButtonController {
      */
     @PostMapping(value = "buttonPageData")
     public RespResult<Page<SysButton>> buttonPageData(@RequestBody ButtonParam param) {
-        Page<SysButton> buttonPage = new Page<>();
+        Page<SysButton> buttonPage = new Page<>(param.getCurrent(), param.getSize());
         LambdaQueryWrapper<SysButton> wrapper = new LambdaQueryWrapper<>();
         if (!StringUtils.isBlank(param.getCode())) {
             wrapper.like(SysButton::getCode, param.getCode().trim());

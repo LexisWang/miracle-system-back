@@ -1,5 +1,6 @@
 package com.miracle.worm_cat.common.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * time: 2022/12/6 22:26
  */
 @Data
+@Builder
 public class JwtUserInfo {
     private Long userid;
     private String nickname;

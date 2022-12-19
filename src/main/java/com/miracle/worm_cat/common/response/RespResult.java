@@ -77,6 +77,18 @@ public class RespResult<T> {
     }
 
     /**
+     * 有消息,默认状态码 失败的返回
+     */
+    public static <T> RespResult<T> failure(String msg) {
+        return new RespResult<>(
+                ResultCode.FAILURE.getCode(),
+                msg,
+                ResultCode.FAILURE.getSuccess(),
+                null
+        );
+    }
+
+    /**
      * 无 Data, 自定义 Msg 失败的返回
      */
     public static <T> RespResult<T> failure(Integer errCode, String msg) {

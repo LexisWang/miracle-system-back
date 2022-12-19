@@ -45,7 +45,7 @@ public class MiracleJwtFilter extends OncePerRequestFilter implements Ordered {
         /*String uri = request.getRequestURI();
         String method = request.getMethod();
         PathMatcher pathMatcher = new AntPathMatcher();
-        response.setContentType("text/json;charset=utf-8");
+        response.setContentType("application/json;charset=utf-8");
         // 1.判断请求 URL 是否是忽略的
         for (String url : IgnoreUrl.URLS) {
             if (pathMatcher.match(url, uri)) { filterChain.doFilter(request, response); return; }
@@ -114,10 +114,17 @@ public class MiracleJwtFilter extends OncePerRequestFilter implements Ordered {
             response.getWriter().write(objectMapper.writeValueAsString(RespResult.accessForbidden(null)));
         }*/
 
-        Map<String, Object> extraParams = new HashMap<>();
+        JwtUserInfo userInfo = JwtUserInfo.builder()
+                .userid(1L)
+                .nickname("奇迹哥")
+                .superId(0L)
+                .build();
+        request.setAttribute("reqUser", userInfo);
+        filterChain.doFilter(request, response);
+        /*Map<String, Object> extraParams = new HashMap<>();
         extraParams.put(BaseConstant.USER_ID, 1);
         extraParams.put(BaseConstant.USER_NICKNAME, "奇迹哥");
-        filterChain.doFilter(new ParamReqWrapper(request, extraParams), response);
+        filterChain.doFilter(new ParamReqWrapper(request, extraParams), response);*/
     }
 
     @Override

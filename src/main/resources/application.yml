@@ -35,6 +35,11 @@ spring:
     password: ''
     database: 6 # 使用 6 号数据库
 
+  servlet:
+    multipart: # 配置请求数据的大小限制
+      max-file-size: 200MB
+      max-request-size: 200MB
+
 # mybatis全局配置
 mybatis-plus:
   global-config:
@@ -51,3 +56,10 @@ logging:
     com.miracle.worm_cat: debug  # 该包打印级别
     org.springframework.data.elasticsearch.client.WIRE: TRACE # es包打印级别
 
+# 阿里云 OSS 配置
+oss:
+  access-key-id: 'LTAI4G3znCErNrFK3LnmFRLS'
+  access-key-secret: '0LtjJD7kvsGGmMzKVGsH2g8YGHlgqI'
+  endpoint: 'http://oss-cn-chengdu.aliyuncs.com'
+  oss-bucket-name: 'lexis-test'
+  domain-name: https://attachment.ontaskksad2d.com/
