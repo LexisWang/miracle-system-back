@@ -55,11 +55,3 @@ logging:
     root: info  # 根目录打印级别
     com.miracle.worm_cat: debug  # 该包打印级别
     org.springframework.data.elasticsearch.client.WIRE: TRACE # es包打印级别
-
-# 阿里云 OSS 配置
-oss:
-  access-key-id: 'LTAI4G3znCErNrFK3LnmFRLS'
-  access-key-secret: '0LtjJD7kvsGGmMzKVGsH2g8YGHlgqI'
-  endpoint: 'http://oss-cn-chengdu.aliyuncs.com'
-  oss-bucket-name: 'lexis-test'
-  domain-name: https://attachment.ontaskksad2d.com/
